@@ -74,16 +74,16 @@ int main()
             cout<<"cd.holeausleihen faild"<<endl;
         }
     }
-   /* if(ok)
+    if(ok)
     {
-        apos=new AusleihPos();
+        AusleihPos *apos=NULL;
         CD3.ausleihen(apos);
         if(CD3.holeAusleihen()!=NULL)
         {
             ok=!ok;
             cout<<"cd.ausleihen faild"<<endl;
         }
-    }*/
+    }
 
     if(ok)
     {
@@ -113,9 +113,16 @@ int main()
             cout<<"<-operator fail"<<endl;
         }
     }
-
-
-
+    if(ok)
+    {
+        CD CD5;
+        CD5=CD5.parse(CD4.toString());
+        if((CD5==CD4)==false)
+        {
+            ok=!ok;
+            cout<<"string/parse failed"<<endl;
+        }
+    }
 
 	if(ok)
         cout<<"All tests passed.";

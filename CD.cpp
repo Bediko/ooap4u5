@@ -3,6 +3,8 @@
 #include<string>
 #include<list>
 #include<sstream>
+#include<cstdlib>
+#include"tokenizer.h"
 
 using namespace std;
 int CD::_number=0;
@@ -45,12 +47,27 @@ int CD::preis(int dauer)
 
 CD CD::parse(string cd)
 {
+    string titel,interpret;
+    Tokenizer tok(cd," ,\n");
+    int typ,basispreis,strafeprotag,dauer;
+
+
+    typ=atoi(tok.nextToken().c_str());
+    basispreis=atoi(tok.nextToken().c_str());
+    strafeprotag=atoi(tok.nextToken().c_str());
+    dauer=atoi(tok.nextToken().c_str());
+    titel=tok.nextToken();
+    interpret=tok.nextToken();
+
+    return CD(typ,basispreis,strafeprotag,dauer,titel,interpret,NULL);
+
+
 }
 
 string CD::toString()
 {
 	ostringstream os;
-	os<<_id<<" "<<_typ << " "<<_basispreis<<" "<<_strafeProTag<<" "<<_dauer<<" "<<_titel<<" "<<_interpret<<endl;
+	os<<_typ << " "<<_basispreis<<" "<<_strafeProTag<<" "<<_dauer<<" "<<_titel<<" "<<_interpret<<endl;
 	return os.str();
 }
 
