@@ -31,12 +31,12 @@ public:
 	CD parse(string cd);
 	string toString();
 	CD();
+	~CD();
 	CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string interpret);
-	~CD(){};
 	CD(const CD& rhs);
-	CD operator=(CD);
-	CD operator==(CD);
-	CD operator<(CD);
+	CD operator=(const CD& CD);
+	bool operator==(const CD& CD);
+	bool operator<(const CD& CD);
 };
 
 
