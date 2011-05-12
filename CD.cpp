@@ -104,7 +104,7 @@ CD::CD(const CD& rhs)
 
 CD CD::operator=(const CD& CD)
 {
-
+    delete(_ausleihe);
 	_id=CD._id;
 	_typ=CD._typ;
 	_basispreis=CD._basispreis;
@@ -112,15 +112,17 @@ CD CD::operator=(const CD& CD)
 	_dauer=CD._dauer;
 	_titel=CD._titel;
 	_interpret=CD._interpret;
+	_ausleihe=0;
 	_ausleihe=CD._ausleihe;
+	return *this;
 }
 
 bool  CD::operator==(const CD& CD){
-return (_titel.compare(CD._titel)==0)&&(_interpret.compare(CD._interpret)==0);
 
+return (_titel.compare(CD._titel)==0)&&(_interpret.compare(CD._interpret)==0);
 }
 
 bool CD::operator<(const CD& CD)
 {
-    return _interpret<CD._interpret;
+    return ((_interpret.compare(CD._interpret)<0)||(_interpret.compare(CD._interpret)==0))&&_titel.compare(CD._titel)<0;
 }
