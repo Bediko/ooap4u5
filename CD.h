@@ -9,8 +9,8 @@ using namespace std;
 class AusleihPos;
 
 class CD{
-private:
-	int static _number;
+protected:
+	static int _number;
 	int _id;
 	int _typ;
 	int _basispreis;
@@ -18,7 +18,7 @@ private:
 	int _dauer;
 	string _titel;
 	string _interpret;
-	AusleihPos *ausleihe;
+	AusleihPos *_ausleihe;
 public:
 	int ident();
 	string titel();
@@ -28,11 +28,11 @@ public:
 	void ausleihen(AusleihPos *apos);
 	AusleihPos* holeAusleihen();
 	int preis(int dauer);
-	CD parse(string cd);
+	static CD parse(string cd);
 	string toString();
 	CD();
 	~CD();
-	CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string interpret);
+	CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string interpret,AusleihPos *ausleihe);
 	CD(const CD& rhs);
 	CD operator=(const CD& CD);
 	bool operator==(const CD& CD);

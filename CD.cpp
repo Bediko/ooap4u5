@@ -4,6 +4,9 @@
 #include<list>
 #include<sstream>
 
+using namespace std;
+int CD::_number=0;
+
 int CD::ident()
 {
 	return _id;
@@ -27,12 +30,12 @@ int CD::holeTyp()
 }
 void CD::ausleihen(AusleihPos *apos)
 {
-	ausleihe=apos;
+	_ausleihe=apos;
 }
 
 AusleihPos* CD::holeAusleihen()
 {
-	return ausleihe;
+	return _ausleihe;
 }
 
 int CD::preis(int dauer)
@@ -54,18 +57,21 @@ string CD::toString()
 
 CD::CD()
 {
-    _id=-1;
+    _id=CD::_number;
 	_typ=-1;
 	_basispreis=-1;
 	_strafeProTag=-1;
     _dauer=-1;
 	_titel="NULL";
 	_interpret="NULL";
-	ausleihe=NULL;
+	_ausleihe=NULL;
+	CD::_number++;
 }
 
-CD::CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string interpret)
+CD::CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string interpret,AusleihPos *ausleihe)
 {
+    _id=CD::_number;
+    CD::_number++;
 
 	_typ=typ;
 	_basispreis=basispreis;
@@ -73,12 +79,14 @@ CD::CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string 
     _dauer=dauer;
 	_titel=titel;
 	_interpret=interpret;
+	_ausleihe=ausleihe;
 
 }
 
 CD::~CD()
 {
-    delete(ausleihe);
+    delete(_ausleihe);
+    CD::_number--;
 }
 
 CD::CD(const CD& rhs)
@@ -91,7 +99,7 @@ CD::CD(const CD& rhs)
 	_dauer=rhs._dauer;
 	_titel=rhs._titel;
 	_interpret=rhs._interpret;
-	ausleihe=rhs.ausleihe;
+	_ausleihe=rhs._ausleihe;
 }
 
 CD CD::operator=(const CD& CD)
@@ -104,13 +112,12 @@ CD CD::operator=(const CD& CD)
 	_dauer=CD._dauer;
 	_titel=CD._titel;
 	_interpret=CD._interpret;
-	ausleihe=CD.ausleihe;
+	_ausleihe=CD._ausleihe;
 }
 
 bool  CD::operator==(const CD& CD){
-if(_titel==CD._titel && _interpret==CD._interpret)
-    return true;
-return false;
+return (_titel.compare(CD._titel)==0)&&(_interpret.compare(CD._interpret)==0);
+
 }
 
 bool CD::operator<(const CD& CD)
