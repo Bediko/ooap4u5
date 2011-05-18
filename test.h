@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 
+
 using namespace std;
 bool test()
 {
@@ -122,6 +123,18 @@ bool test()
             ok=!ok;
             cout<<"string/parse failed"<<endl;
         }
+    }
+ // *****************************************************************************************************************
+ PreisStrategie *p1,*p2;
+ p1= new MitarbeiterPreis();
+ p2= new GrossKundenPreis();
+ Kunde Kunde1("Test Test","Testtown",p1);
+ Kunde Kunde2("Max Mustermann","Musterstadt",p2);
+
+
+    if(ok)
+    {
+
     }
 
 	return ok;

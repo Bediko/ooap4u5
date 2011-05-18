@@ -103,7 +103,7 @@ CD::CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string 
 CD::~CD()
 {
     delete(_ausleihe);
-    CD::_number--;
+
 }
 
 CD::CD(const CD& rhs)

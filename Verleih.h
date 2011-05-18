@@ -4,6 +4,7 @@
 #include<list>
 #include"date.h"
 #include"CD.h"
+#include"Kunde.h"
 
 using namespace std;
 

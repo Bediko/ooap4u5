@@ -1,18 +1,35 @@
 #ifndef PREISSTRATEGIE_H
-#define PREISSTARTEGIE_H
+#define PREISSTRATEGIE_H
 
 #include "date.h"
 #include "CD.h"
-#include <list>
+#include "dictionary.h"
 using namespace std;
 class CD;
 
 class PreisStrategie{
 protected:
-	int typ;
+	int _typ;
 public:
-	int preis(list<CD*>  cds, Date tag);
-	int type();
+    virtual int preis(Dictionary<CD*>  cds, Date tag);
+	int typ();
+	PreisStrategie();
+};
+
+class GrossKundenPreis: public PreisStrategie{
+
+public:
+	int preis(Dictionary<CD*> cds, Date tag);
+	GrossKundenPreis();
+
+};
+
+class MitarbeiterPreis: public PreisStrategie{
+
+public:
+	int preis(Dictionary<CD*> cds, Date tag);
+	MitarbeiterPreis();
+
 };
 
 

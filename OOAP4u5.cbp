@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OOAP4u5" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/OOAP4u5" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/OOAP4u5" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="AusleihPos.cpp" />
+		<Unit filename="AusleihPos.h" />
+		<Unit filename="CD.cpp" />
+		<Unit filename="CD.h" />
+		<Unit filename="DateFormat.cpp" />
+		<Unit filename="DateFormat.h" />
+		<Unit filename="Kunde.cpp" />
+		<Unit filename="Kunde.h" />
+		<Unit filename="PreisStrategie.cpp" />
+		<Unit filename="PreisStrategie.h" />
+		<Unit filename="Verleih.h" />
+		<Unit filename="date.cpp" />
+		<Unit filename="date.h" />
+		<Unit filename="liste.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="test.h" />
+		<Unit filename="tokenizer.cpp" />
+		<Unit filename="tokenizer.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
