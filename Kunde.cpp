@@ -101,7 +101,7 @@ Kunde Kunde::parse(string kunde)
     string name,ort;
     int typ;
     PreisStrategie *p;
-    Tokenizer tok(kunde," ,\n");
+    Tokenizer tok(kunde,";,\n");
 
 
     name=tok.nextToken();
@@ -114,11 +114,11 @@ Kunde Kunde::parse(string kunde)
     else if(typ==2)
         p=new MitarbeiterPreis();
 
-    return Kunde(name,ort,p);
+    return  Kunde(name,ort,p);
 }
 string Kunde::toString()
 {
     ostringstream os;
-    os<<_name<<" "<<_ort<<" "<<_preisStrategie->typ()<<endl;
+    os<<_name<<";"<<_ort<<";"<<_preisStrategie->typ()<<endl;
     return os.str();
 }

@@ -201,7 +201,7 @@ bool test()
 
     if(ok)
     {
-        Kunde2.toString();
+
         Kunde1=Kunde1.parse(Kunde2.toString());
         if(Kunde1.getort()!=Kunde2.getort())
         {
