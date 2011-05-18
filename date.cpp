@@ -126,7 +126,7 @@ void Date::setFormat(DateFormat *f)
 }
 //------------------------------------------------------------------------------------------------
 
-int Date::operator-(Date d)
+int Date::operator-(const Date& d)
 {
 	return diff(d);
 }

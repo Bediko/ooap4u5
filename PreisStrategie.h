@@ -14,6 +14,8 @@ public:
     virtual int preis(Dictionary<CD*>  cds, Date tag);
 	int typ();
 	PreisStrategie();
+	Date getDate();
+	~PreisStrategie(){};
 };
 
 class GrossKundenPreis: public PreisStrategie{
@@ -21,6 +23,8 @@ class GrossKundenPreis: public PreisStrategie{
 public:
 	int preis(Dictionary<CD*> cds, Date tag);
 	GrossKundenPreis();
+	~GrossKundenPreis(){};
+
 
 };
 
@@ -29,7 +33,7 @@ class MitarbeiterPreis: public PreisStrategie{
 public:
 	int preis(Dictionary<CD*> cds, Date tag);
 	MitarbeiterPreis();
-
+    ~MitarbeiterPreis(){};
 };
 
 

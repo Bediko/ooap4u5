@@ -8,8 +8,9 @@ bool test()
 {
 	CD CD1;
 	CD CD2;
-	CD CD3(1,15,300,180, "A", "A",NULL);
-	CD CD4(1,15,300,180, "B", "B",NULL);
+	CD CD3(0,1, "A", "A",NULL);
+	CD CD4(1,1, "B", "B",NULL);
+	CD CD6(2,1,"C","C",NULL);
 	bool ok=true;
 
 	if(ok)
@@ -52,7 +53,7 @@ bool test()
     }
     if(ok)
     {
-        if(CD3.holeTyp()!=1)
+        if(CD3.holeTyp()!=0)
         {
             ok=!ok;
             cout<<"cd.holeTyp failed"<<endl;
@@ -124,18 +125,96 @@ bool test()
             cout<<"string/parse failed"<<endl;
         }
     }
+    if(ok)
+    {
+        CD3.setzeTyp(0);
+        if(CD3.preis(1)!=200 || CD4.preis(1)!=100 || CD6.preis(1)!=200)
+        {
+            ok=!ok;
+            cout<<"cd.preis basic fail"<<endl;
+        }
+        if(CD3.preis(5)!=1100 || CD4.preis(11)!=1140 || CD6.preis(2)!=900)
+        {
+            ok=!ok;
+            cout<<"cd.preis tolong fail"<<endl;
+        }
+    }
+
+
+
  // *****************************************************************************************************************
- PreisStrategie *p1,*p2;
+ PreisStrategie *p1,*p2,*p3;
  p1= new MitarbeiterPreis();
  p2= new GrossKundenPreis();
+ p3= new PreisStrategie();
  Kunde Kunde1("Test Test","Testtown",p1);
  Kunde Kunde2("Max Mustermann","Musterstadt",p2);
+ Kunde Kunde3("Sir Optimus Prime","Grailham",p3);
+ Dictionary<CD*> cds;
+ cds.insert(CD3.ident(),&CD3);
+ Date tag(18,5,2011);
+
 
 
     if(ok)
     {
+        if(Kunde1.ident()!=0)
+        {
+            ok=!ok;
+            cout<<"kunde.ident fail"<<endl;
+        }
+    }
+    if(ok)
+    {
+        Kunde1.setzeName("Test");
+        if(Kunde1.getname()!="Test")
+        {
+            ok=!ok;
+            cout<<"kunde.name fail"<<endl;
+        }
 
     }
+    if(ok)
+    {
+        Kunde1.setzeOrt("Test");
+        if(Kunde1.getort()!="Test")
+        {
+            ok=!ok;
+            cout<<"kunde.ort fail"<<endl;
+        }
+
+    }
+    if(ok)
+    {
+        AusleihPos *apos=new AusleihPos(&Kunde1,&CD3,&tag);
+        CD3.ausleihen(apos);
+        Kunde1.leiheAus(apos);
+
+        if(Kunde1.preis(cds,tag)!=0)
+        {
+            ok=!ok;
+            cout<<"kunde.preis fail"<<endl;
+        }
+        if(ok)
+            Kunde1.rueckgabe(apos);
+
+
+    if(ok)
+    {
+        Kunde2.toString();
+        Kunde1=Kunde1.parse(Kunde2.toString());
+        if(Kunde1.getort()!=Kunde2.getort())
+        {
+            ok=!ok;
+            cout<<"kunde parse/string fail"<<endl;
+        }
+    }
+}
+
+
+
+
+
 
 	return ok;
 }

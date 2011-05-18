@@ -19,6 +19,7 @@ Kunde::Kunde(string n, string o,PreisStrategie *p)
     _name=n;
     _ort=o;
     _preisStrategie=p;
+
 }
 Kunde::~Kunde()
 {
@@ -36,12 +37,13 @@ Kunde::Kunde(const Kunde& rhs)
 }
 Kunde Kunde::operator=(const Kunde& Kunde)
 {
+
     _preisStrategie=Kunde._preisStrategie;
-  _ausleihen=Kunde._ausleihen;
-  _name=Kunde._name;
-  _ort=Kunde._ort;
-  _id=Kunde._id;
-  return *this;
+    _ausleihen=Kunde._ausleihen;
+    _name=Kunde._name;
+    _ort=Kunde._ort;
+    _id=Kunde._id;
+    return *this;
 }
 
 bool Kunde::operator==(const Kunde& Kunde)

@@ -5,19 +5,21 @@
 
 using namespace std;
 class Date;
+class Kunde;
+class CD;
 class AusleihPos{
+
 private:
-//	Kunde kunde;
-	Date *tagDerAusleihe;
+	Kunde *_kunde;
+	Date *_tagDerAusleihe;
+	CD *_cd;
 public:
+    Date *getDate();
 	AusleihPos parse(string a);
 	string toString();
-	AusleihPos();
+	AusleihPos(Kunde *kunde,CD *cd,Date *tagDerAusleihe);
 	~AusleihPos();
-	/*AusleihPos(const CD& rhs);
-	AusleihPos operator=(CD);
-	AusleihPos operator==(CD);
-	AusleihPos operator<(CD);*/
+
 };
 
 

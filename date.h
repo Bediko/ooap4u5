@@ -23,7 +23,7 @@ public:
 	int getWeekInYear();
 	bool isLeapYear();
 	int diff(Date d);
-	int operator-(Date d);
+	int operator-(const Date& d);
 	string toString();
 	void setFormat(DateFormat *f);
 };

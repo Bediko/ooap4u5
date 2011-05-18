@@ -32,7 +32,7 @@ public:
 	string toString();
 	CD();
 	~CD();
-	CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string interpret,AusleihPos *ausleihe);
+	CD(int typ, int dauer, string titel, string interpret,AusleihPos *ausleihe);
 	CD(const CD& rhs);
 	CD operator=(const CD& CD);
 	bool operator==(const CD& CD);

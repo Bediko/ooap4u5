@@ -42,7 +42,24 @@ AusleihPos* CD::holeAusleihen()
 
 int CD::preis(int dauer)
 {
-	return _basispreis*dauer;
+    int preis;
+    preis=_basispreis*dauer;
+    switch(_typ)
+    {
+    case 0:
+        if(dauer>4)
+            preis+=((dauer-4)*_strafeProTag);
+        break;
+    case 1:
+        if(dauer>10)
+            preis+=(dauer-10)*_strafeProTag;
+        break;
+    case 2:
+        if(dauer>1)
+            preis+=(dauer-1)*_strafeProTag;
+        break;
+    }
+	return preis;
 }
 
 CD CD::parse(string cd)
@@ -59,7 +76,7 @@ CD CD::parse(string cd)
     titel=tok.nextToken();
     interpret=tok.nextToken();
 
-    return CD(typ,basispreis,strafeprotag,dauer,titel,interpret,NULL);
+    return CD(typ,dauer,titel,interpret,NULL);
 
 
 }
@@ -85,14 +102,28 @@ CD::CD()
 	CD::_number++;
 }
 
-CD::CD(int typ,int basispreis,int strafeProTag, int dauer, string titel, string interpret,AusleihPos *ausleihe)
+CD::CD(int typ,int dauer, string titel, string interpret,AusleihPos *ausleihe)
 {
     _id=CD::_number;
     CD::_number++;
 
 	_typ=typ;
-	_basispreis=basispreis;
-	_strafeProTag=strafeProTag;
+	switch(_typ)
+	{
+	    case 0:
+	    _basispreis=200;
+        _strafeProTag=100;
+        break;
+        case 1:
+	    _basispreis=100;
+        _strafeProTag=40;
+        break;
+        case 2:
+	    _basispreis=200;
+        _strafeProTag=500;
+        break;
+	}
+
     _dauer=dauer;
 	_titel=titel;
 	_interpret=interpret;
@@ -131,6 +162,7 @@ CD CD::operator=(const CD& CD)
 	_interpret=CD._interpret;
 	_ausleihe=0;
 	_ausleihe=CD._ausleihe;
+
 	return *this;
 }
 

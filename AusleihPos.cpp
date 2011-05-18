@@ -1,5 +1,11 @@
 #include "AusleihPos.h"
 #include <sstream>
+
+Date* AusleihPos::getDate()
+{
+    return _tagDerAusleihe;
+}
+
 AusleihPos AusleihPos::parse(string a)
 {
 
@@ -7,11 +13,14 @@ AusleihPos AusleihPos::parse(string a)
 string AusleihPos::toString()
 {
 	ostringstream os;
-	os << tagDerAusleihe->toString()<<" "<<endl;//kunde.toString()<<endl;
+	os << _tagDerAusleihe->toString()<<" "<<endl;//kunde.toString()<<endl;
 	return os.str();
 }
-AusleihPos::AusleihPos()
+AusleihPos::AusleihPos(Kunde *kunde,CD *cd,Date *tagderAusleihe)
 {
+    _kunde=kunde;
+    _tagDerAusleihe=tagderAusleihe;
+    _cd=cd;
 }
 AusleihPos::~AusleihPos()
 {
