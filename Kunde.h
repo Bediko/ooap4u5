@@ -21,11 +21,11 @@ private:
 	string _ort;
 public:
     Kunde(string n, string o,PreisStrategie *p);
+    Kunde();
     ~Kunde();
     Kunde(const Kunde& rhs);
-	Kunde operator=(const Kunde& Kunde);
-	bool operator==(const Kunde& Kunde);
-	bool operator<(const Kunde& Kunde);
+	Kunde(string name,string ort,int typ);
+	Kunde operator=(const Kunde& kunde);
 
 	int ident();
 	void setzeName(string n);

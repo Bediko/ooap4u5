@@ -147,9 +147,9 @@ bool test()
  p1= new MitarbeiterPreis();
  p2= new GrossKundenPreis();
  p3= new PreisStrategie();
- Kunde Kunde1("Test Test","Testtown",p1);
- Kunde Kunde2("Max Mustermann","Musterstadt",p2);
- Kunde Kunde3("Sir Optimus Prime","Grailham",p3);
+ Kunde Kunde1("Test Test","Testtown",0);
+ Kunde Kunde2("Max Mustermann","Musterstadt",1);
+ Kunde Kunde3("Sir Optimus Prime","Grailham",2);
  Dictionary<CD*> cds;
  cds.insert(CD3.ident(),&CD3);
  Date tag(18,5,2011);

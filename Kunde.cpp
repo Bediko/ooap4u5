@@ -12,47 +12,78 @@ int Kunde::_number=0;
 
 
 
-Kunde::Kunde(string n, string o,PreisStrategie *p)
+Kunde::Kunde()
+{
+    _id=-1;
+
+    _name="NULL";
+    _ort="NULL";
+    _preisStrategie=NULL;
+
+}
+
+Kunde::Kunde(string name,string ort,int typ)
 {
     _id=_number;
     Kunde::_number++;
-    _name=n;
-    _ort=o;
-    _preisStrategie=p;
-
+    _name=name;
+    _ort=ort;
+    switch(typ)
+    {
+    default:
+        _preisStrategie=new PreisStrategie();
+        break;
+    case 1:
+        _preisStrategie=new MitarbeiterPreis();
+        break;
+    case 2:
+        _preisStrategie=new GrossKundenPreis();
+    }
 }
+
 Kunde::~Kunde()
 {
-    delete(_preisStrategie);
+        delete(_preisStrategie);
         _ausleihen.erase();
-
 }
 Kunde::Kunde(const Kunde& rhs)
 {
-  _preisStrategie=rhs._preisStrategie;
+    switch(rhs._preisStrategie->typ())
+{
+   default:
+        _preisStrategie=new PreisStrategie();
+        break;
+    case 1:
+        _preisStrategie=new MitarbeiterPreis();
+        break;
+    case 2:
+        _preisStrategie=new GrossKundenPreis();
+}
+
   _ausleihen=rhs._ausleihen;
   _name=rhs._name;
   _ort=rhs._ort;
   _id=rhs._id;
 }
-Kunde Kunde::operator=(const Kunde& Kunde)
-{
 
-    _preisStrategie=Kunde._preisStrategie;
-    _ausleihen=Kunde._ausleihen;
-    _name=Kunde._name;
-    _ort=Kunde._ort;
-    _id=Kunde._id;
-    return *this;
-}
-
-bool Kunde::operator==(const Kunde& Kunde)
+Kunde Kunde::operator=(const Kunde& kunde)
 {
-    return (_name==Kunde._name)&&(_ort==Kunde._ort);
-}
-bool Kunde::operator<(const Kunde& Kunde)
+    switch(kunde._preisStrategie->typ())
 {
-    return ((_name.compare(Kunde._name)<0)||(_name.compare(Kunde._name)==0))&&_ort.compare(Kunde._ort)<0;
+   default:
+        _preisStrategie=new PreisStrategie();
+        break;
+    case 1:
+        _preisStrategie=new MitarbeiterPreis();
+        break;
+    case 2:
+        _preisStrategie=new GrossKundenPreis();
+}
+  _ausleihen=kunde._ausleihen;
+  _name=kunde._name;
+  _ort=kunde._ort;
+  _id=kunde._id;
+  return *this;
 }
 
 int Kunde::ident()
@@ -100,21 +131,11 @@ Kunde Kunde::parse(string kunde)
 {
     string name,ort;
     int typ;
-    PreisStrategie *p;
     Tokenizer tok(kunde,";,\n");
-
-
     name=tok.nextToken();
     ort=tok.nextToken();
     typ=atoi(tok.nextToken().c_str());
-    if(typ==0)
-        p=new PreisStrategie();
-    else if(typ==1)
-        p=new GrossKundenPreis();
-    else if(typ==2)
-        p=new MitarbeiterPreis();
-
-    return  Kunde(name,ort,p);
+    return  Kunde(name,ort,typ);
 }
 string Kunde::toString()
 {
