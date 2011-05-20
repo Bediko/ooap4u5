@@ -62,10 +62,10 @@ int CD::preis(int dauer)
 	return preis;
 }
 
-CD CD::parse(string cd)
+CD * CD::parse(string cd)
 {
     string titel,interpret;
-    Tokenizer tok(cd," ,\n");
+    Tokenizer tok(cd,";,\n");
     int typ,basispreis,strafeprotag,dauer;
 
 
@@ -76,7 +76,7 @@ CD CD::parse(string cd)
     titel=tok.nextToken();
     interpret=tok.nextToken();
 
-    return CD(typ,dauer,titel,interpret,NULL);
+    return new CD(typ,dauer,titel,interpret,NULL);
 
 
 }
@@ -84,7 +84,7 @@ CD CD::parse(string cd)
 string CD::toString()
 {
 	ostringstream os;
-	os<<_typ << " "<<_basispreis<<" "<<_strafeProTag<<" "<<_dauer<<" "<<_titel<<" "<<_interpret<<endl;
+	os<<_typ << ";"<<_basispreis<<";"<<_strafeProTag<<";"<<_dauer<<";"<<_titel<<";"<<_interpret<<endl;
 	return os.str();
 }
 
@@ -165,6 +165,7 @@ CD CD::operator=(const CD& CD)
 
 	return *this;
 }
+
 
 bool  CD::operator==(const CD& CD){
 

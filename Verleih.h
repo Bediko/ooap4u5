@@ -1,7 +1,7 @@
 #ifndef VERLEIH_H
 #define VERLEIH_H
 #include<string>
-#include<list>
+#include"dictionary.h"
 #include"date.h"
 #include"CD.h"
 #include"Kunde.h"
@@ -10,12 +10,12 @@ using namespace std;
 
 class Verleih{
 private:
-	list<CD> cds;
-	list<Kunde> kunden;
-	list<AusleihPos> ausleihen;
+	Dictionary<CD*> _cds;
+	Dictionary<Kunde*> _kunden;
+	Dictionary<AusleihPos*> _ausleihen;
 public:
 	void lesenAusDatei(string name);
-	void schreibenInDatei(string nam);
+	void schreibenInDatei(string name);
 	int kundenAnlegen(string name, string ort, int typ);
 	void kundenEntfernen(int id);
 	void kundeBearbeiten(int id, string name, string ort, int typ);

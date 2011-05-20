@@ -14,7 +14,7 @@ Date::Date(int day, int month, int year, DateFormat *f)
 Date::Date(int day, int month, int year)
 {
 	DateFormat *f;
-	f = new DateFormat;
+	f = new DateFormat();
 
 	_day = day;
 	_month = month;
@@ -129,4 +129,9 @@ void Date::setFormat(DateFormat *f)
 int Date::operator-(const Date& d)
 {
 	return diff(d);
+}
+
+Date * Date::parse(string s)
+{
+    return _nf->parse(s);
 }

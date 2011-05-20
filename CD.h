@@ -28,7 +28,7 @@ public:
 	void ausleihen(AusleihPos *apos);
 	AusleihPos* holeAusleihen();
 	int preis(int dauer);
-	static CD parse(string cd);
+	static CD * parse(string cd);
 	string toString();
 	CD();
 	~CD();

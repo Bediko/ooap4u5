@@ -117,9 +117,9 @@ bool test()
     }
     if(ok)
     {
-        CD CD5;
-        CD5=CD5.parse(CD4.toString());
-        if((CD5==CD4)==false)
+        CD *CD5;
+        CD5=CD5->parse(CD4.toString());
+        if((*CD5==CD4)==false)
         {
             ok=!ok;
             cout<<"string/parse failed"<<endl;
@@ -147,18 +147,18 @@ bool test()
  p1= new MitarbeiterPreis();
  p2= new GrossKundenPreis();
  p3= new PreisStrategie();
- Kunde Kunde1("Test Test","Testtown",0);
+ Kunde *Kunde1=new Kunde("Test Test","Testtown",0);
  Kunde Kunde2("Max Mustermann","Musterstadt",1);
  Kunde Kunde3("Sir Optimus Prime","Grailham",2);
  Dictionary<CD*> cds;
  cds.insert(CD3.ident(),&CD3);
- Date tag(18,5,2011);
+ Date *tag =new Date(20,5,2011,new DateFormatDE());
 
 
 
     if(ok)
     {
-        if(Kunde1.ident()!=0)
+        if(Kunde1->ident()!=0)
         {
             ok=!ok;
             cout<<"kunde.ident fail"<<endl;
@@ -166,8 +166,8 @@ bool test()
     }
     if(ok)
     {
-        Kunde1.setzeName("Test");
-        if(Kunde1.getname()!="Test")
+        Kunde1->setzeName("Test");
+        if(Kunde1->getname()!="Test")
         {
             ok=!ok;
             cout<<"kunde.name fail"<<endl;
@@ -176,8 +176,8 @@ bool test()
     }
     if(ok)
     {
-        Kunde1.setzeOrt("Test");
-        if(Kunde1.getort()!="Test")
+        Kunde1->setzeOrt("Test");
+        if(Kunde1->getort()!="Test")
         {
             ok=!ok;
             cout<<"kunde.ort fail"<<endl;
@@ -186,30 +186,44 @@ bool test()
     }
     if(ok)
     {
-        AusleihPos *apos=new AusleihPos(&Kunde1,&CD3,&tag);
+        AusleihPos *apos=new AusleihPos(Kunde1,&CD3,tag);
         CD3.ausleihen(apos);
-        Kunde1.leiheAus(apos);
+        Kunde1->leiheAus(apos);
 
-        if(Kunde1.preis(cds,tag)!=0)
+        if(Kunde1->preis(cds,*tag)!=0)
         {
             ok=!ok;
             cout<<"kunde.preis fail"<<endl;
         }
         if(ok)
-            Kunde1.rueckgabe(apos);
+            Kunde1->rueckgabe(apos);
 
 
     if(ok)
     {
 
-        Kunde1=Kunde1.parse(Kunde2.toString());
-        if(Kunde1.getort()!=Kunde2.getort())
+        Kunde1=Kunde1->parse(Kunde2.toString());
+        if(Kunde1->getort()!=Kunde2.getort())
         {
             ok=!ok;
             cout<<"kunde parse/string fail"<<endl;
         }
     }
-}
+//**************************************************************
+    AusleihPos *apos1;
+    if(ok)
+    {
+
+       apos1=apos1->parse(apos->toString());
+        if(apos1->getDate()->toString()!=apos->getDate()->toString())
+        {
+            ok=!ok;
+            cout<<"apos.parse fail"<<endl;
+        }
+    }
+
+
+    }
 
 
 

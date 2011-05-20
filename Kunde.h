@@ -37,7 +37,7 @@ public:
 	void leiheAus(AusleihPos *apos);
 	void rueckgabe(AusleihPos *apos);
 	Dictionary<AusleihPos *> holeAusleihen();
-	static Kunde parse(string kunde);
+	static Kunde * parse(string kunde);
 	string toString();
 };
 

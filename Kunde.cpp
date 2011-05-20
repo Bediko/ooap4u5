@@ -83,7 +83,7 @@ Kunde Kunde::operator=(const Kunde& kunde)
   _name=kunde._name;
   _ort=kunde._ort;
   _id=kunde._id;
-  return *this;
+  //return *this;
 }
 
 int Kunde::ident()
@@ -127,7 +127,7 @@ Dictionary<AusleihPos *> Kunde::holeAusleihen()
 {
     return _ausleihen;
 }
-Kunde Kunde::parse(string kunde)
+Kunde * Kunde::parse(string kunde)
 {
     string name,ort;
     int typ;
@@ -135,8 +135,9 @@ Kunde Kunde::parse(string kunde)
     name=tok.nextToken();
     ort=tok.nextToken();
     typ=atoi(tok.nextToken().c_str());
-    return  Kunde(name,ort,typ);
+    return  new Kunde(name,ort,typ);
 }
+
 string Kunde::toString()
 {
     ostringstream os;

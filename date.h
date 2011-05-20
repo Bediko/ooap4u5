@@ -26,6 +26,7 @@ public:
 	int operator-(const Date& d);
 	string toString();
 	void setFormat(DateFormat *f);
+	Date * parse(string s);
 };
 
 #endif

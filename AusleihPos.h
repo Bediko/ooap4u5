@@ -15,7 +15,7 @@ private:
 	CD *_cd;
 public:
     Date *getDate();
-	AusleihPos parse(string a);
+	static AusleihPos * parse(string a);
 	string toString();
 	AusleihPos(Kunde *kunde,CD *cd,Date *tagDerAusleihe);
 	~AusleihPos();
