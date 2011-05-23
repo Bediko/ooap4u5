@@ -1,0 +1,79 @@
+# depslib dependency file v1.0
+1305972956 source:/home/bediko/code/OOAP4u5/AusleihPos.cpp
+	"AusleihPos.h"
+	"Verleih.h"
+	"Tokenizer.h"
+
+1305147239 /home/bediko/code/OOAP4u5/AusleihPos.h
+	"Date.h"
+	"Kunde.h"
+	"CD.h"
+
+1304856009 /home/bediko/code/OOAP4u5/Date.h
+	"DateFormat.h"
+	<sstream>
+
+1303135943 /home/bediko/code/OOAP4u5/DateFormat.h
+	<sstream>
+
+1305544200 /home/bediko/code/OOAP4u5/Kunde.h
+	"PreisStrategie.h"
+
+1306139458 /home/bediko/code/OOAP4u5/PreisStrategie.h
+	"CD.h"
+	"Date.h"
+	<vector>
+
+1306141385 /home/bediko/code/OOAP4u5/CD.h
+	<vector>
+	<string>
+
+1306154535 /home/bediko/code/OOAP4u5/Verleih.h
+	"CD.h"
+	"AusleihPos.h"
+	"Kunde.h"
+	<map>
+	<vector>
+
+1305973202 /home/bediko/code/OOAP4u5/Tokenizer.h
+	<string>
+
+1306137206 source:/home/bediko/code/OOAP4u5/CD.cpp
+	"CD.h"
+	"Tokenizer.h"
+	<sstream>
+
+1303135943 source:/home/bediko/code/OOAP4u5/DateFormat.cpp
+	"DateFormat.h"
+	"Date.h"
+	<iomanip>
+
+1306154561 source:/home/bediko/code/OOAP4u5/Kunde.cpp
+	"Kunde.h"
+	"Verleih.h"
+	"Tokenizer.h"
+	<cstdlib>
+
+1306136054 source:/home/bediko/code/OOAP4u5/PreisStrategie.cpp
+	"PreisStrategie.h"
+	"AusleihPos.h"
+
+1306136724 source:/home/bediko/code/OOAP4u5/main.cpp
+	"Verleih.h"
+	"Date.h"
+	<iostream>
+	<string>
+
+1304862306 source:/home/bediko/code/OOAP4u5/Date.cpp
+	"Date.h"
+	<sstream>
+	<ctime>
+
+1305973354 source:/home/bediko/code/OOAP4u5/Tokenizer.cpp
+	"Tokenizer.h"
+
+1306154650 source:/home/bediko/code/OOAP4u5/Verleih.cpp
+	"Verleih.h"
+	"Kunde.h"
+	<fstream>
+

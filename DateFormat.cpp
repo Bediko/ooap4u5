@@ -1,134 +1,76 @@
-#include <string>
-#include "date.h"
+
 #include "DateFormat.h"
-#include <sstream>
-#include <iostream>
+#include "Date.h"
+#include <iomanip>
 
-using namespace std;
+// ************************************** DateFormat **************************************************************************
 
-	int DateFormat::getDay(Date *d) {
-		return d->_day;
-	}
-	int DateFormat::getMonth(Date *d) {
-		return d->_month;
-	}
-	int DateFormat::getYear(Date *d) {
-		return d->_year;
-	}
+string DateFormat::getNameOfDay(int index) {
+	string days[7] = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
 
+	return days[index];
+}
 
-string DateFormat::format(Date *d)
-{
+string DateFormat::format(Date *d) {
 	ostringstream os;
+	
+	os << setfill('0') << setw(2) << d->getDay() << "-" << setw(2) << d->getMonth() << "-" << d->getYear();
+
+	return os.str();
+}
+
+
+
+// ******************************************* DateFormatDE *****************************************************************
+
+string DateFormatDE::getNameOfDay(int index) {
+	string days[7] = {"Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"};
+
+	return days[index];
+}
+
+string DateFormatDE::format(Date *d) {
+	ostringstream os;
+	
+	os << setfill('0') << setw(2) << d->getDay() << "." << setw(2) << d->getMonth() << "." << d->getYear();
+
+	return os.str();
+}
+
+Date *DateFormatDE::parse(string s) {
+	istringstream is(s);
 	int day, month, year;
-	day = this->getDay(d);
-	month =  this->getMonth(d) ;
-	year = this->getYear(d);
-	os << day << "." << month << "." << year ;
-	return os.str();
+	char temp;
+
+	is >> day >> temp >> month >> temp >> year;
+
+	return new Date(day, month, year);
 }
-//------------------------------------------------------------------------------------------------
-Date * DateFormat::parse(string s)
-{
-	Date *tmp;
-	string temp;
-	stringstream ss;
-	string::size_type beg, end;
-	int dmy[3], i=0;
 
 
 
-	beg = s.find_first_not_of(".",0);
-	end = s.find_first_of(".", beg);
+// *********************************** DateFormatEN ************************************************************************
 
-	while(string::npos != beg || string::npos != end)
-	{
+string DateFormatEN::getNameOfDay(int index) {
+	string days[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
-		temp = s.substr(beg, end - beg);
-        stringstream ss(temp);
-        ss>>dmy[i] ;
-		beg = s.find_first_not_of(".", end);
-		end = s.find_first_of(".", beg);
-		i++;
-
-	}
-
-	tmp = new Date(dmy[0],dmy[1],dmy[2]);
-	tmp->setFormat(this);
-	return tmp;
+	return days[index];
 }
-//*************************************************************************************************
-string DateFormatDE::format(Date *d)
-{
+
+string DateFormatEN::format(Date *d) {
 	ostringstream os;
-	os << this->getDay(d) << "." << this->getMonth(d) <<"." << this->getYear(d);
+	
+	os << setfill('0') << setw(2) << d->getMonth() << "/" << setw(2) << d->getDay() << "/" << d->getYear();
+
 	return os.str();
 }
-//------------------------------------------------------------------------------------------------
-Date * DateFormatDE::parse(string s)
-{
-	Date *tmp;
-	string temp;
-	string::size_type beg, end;
-	int dmy[3], i=0;
 
-	tmp = new Date(0,0,0);
-	tmp->setFormat(this);
+Date *DateFormatEN::parse(string s) {
+	istringstream is(s);
+	int day, month, year;
+	char temp;
 
-	beg = s.find_first_not_of(".",0);
-	end = s.find_first_of(".", beg);
+	is >> month >> temp >> day >> temp >> year;
 
-	while(string::npos != beg || string::npos != end)
-	{
-
-		temp = s.substr(beg, end - beg);
-		stringstream ss(temp);
-        ss>>dmy[i] ;
-		beg = s.find_first_not_of(".", end);
-		end = s.find_first_of(".", beg);
-		i++;
-
-	}
-
-	tmp = new Date(dmy[0],dmy[1],dmy[2]);
-	tmp->setFormat(this);
-	return tmp;
-}
-
-//*************************************************************************************************
-string DateFormatEN::format(Date *d)
-{
-	ostringstream os;
-	os << this->getMonth(d) << "/" << this->getDay(d) <<"/" << this->getYear(d);
-	return os.str();
-}
-//------------------------------------------------------------------------------------------------
-Date * DateFormatEN::parse(string s)
-{
-	Date *tmp;
-	string temp;
-	string::size_type beg, end;
-	int dmy[3], i=0;
-
-	tmp = new Date(0,0,0);
-	tmp->setFormat(this);
-
-	beg = s.find_first_not_of("/",0);
-	end = s.find_first_of("/", beg);
-
-	while(string::npos != beg || string::npos != end)
-	{
-
-		temp = s.substr(beg, end - beg);
-		stringstream ss(temp);
-        ss>>dmy[i] ;
-		beg = s.find_first_not_of("/", end);
-		end = s.find_first_of("/", beg);
-		i++;
-
-	}
-
-	tmp = new Date(dmy[0],dmy[1],dmy[2]);
-	tmp->setFormat(this);
-	return tmp;
+	return new Date(day, month, year);
 }

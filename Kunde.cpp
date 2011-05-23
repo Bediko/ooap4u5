@@ -1,146 +1,115 @@
+
+
 #include "Kunde.h"
-#include <string>
-#include <list>
-#include "tokenizer.h"
+#include "Verleih.h"
+#include "Tokenizer.h"
 #include <cstdlib>
-#include <sstream>
-#include "PreisStrategie.h"
 
-using namespace std;
+int Kunde::_number = 1;
 
-int Kunde::_number=0;
-
-
-
-Kunde::Kunde()
-{
-    _id=-1;
-
-    _name="NULL";
-    _ort="NULL";
-    _preisStrategie=NULL;
-
+Kunde::Kunde() {
+	_name = "";
+	_ort = "";
+	_id = 0;
+	_preisStrategie = new PreisStrategie;
 }
 
-Kunde::Kunde(string name,string ort,int typ)
-{
-    _id=_number;
-    Kunde::_number++;
-    _name=name;
-    _ort=ort;
-    switch(typ)
-    {
-    default:
-        _preisStrategie=new PreisStrategie();
-        break;
-    case 1:
-        _preisStrategie=new MitarbeiterPreis();
-        break;
-    case 2:
-        _preisStrategie=new GrossKundenPreis();
-    }
+Kunde::Kunde(string name, string ort, int typ) {
+	_name = name;
+	_ort = ort;
+	_id = Kunde::_number++;
+	_preisStrategie = PreisStrategie::itoPS(typ);
 }
 
-Kunde::~Kunde()
-{
-        delete(_preisStrategie);
-        _ausleihen.erase();
-}
-Kunde::Kunde(const Kunde& rhs)
-{
-    switch(rhs._preisStrategie->typ())
-{
-   default:
-        _preisStrategie=new PreisStrategie();
-        break;
-    case 1:
-        _preisStrategie=new MitarbeiterPreis();
-        break;
-    case 2:
-        _preisStrategie=new GrossKundenPreis();
+Kunde::Kunde(string name, string ort, int typ, int id) {
+	_name = name;
+	_ort = ort;
+	_id = id;
+	_preisStrategie = PreisStrategie::itoPS(typ);
+
+	if (id >= _number)
+		_number = id + 1;
 }
 
-  _ausleihen=rhs._ausleihen;
-  _name=rhs._name;
-  _ort=rhs._ort;
-  _id=rhs._id;
+
+void Kunde::setzeName(string n) {
+	_name = n;
 }
 
-Kunde Kunde::operator=(const Kunde& kunde)
-{
-    switch(kunde._preisStrategie->typ())
-{
-   default:
-        _preisStrategie=new PreisStrategie();
-        break;
-    case 1:
-        _preisStrategie=new MitarbeiterPreis();
-        break;
-    case 2:
-        _preisStrategie=new GrossKundenPreis();
-}
-  _ausleihen=kunde._ausleihen;
-  _name=kunde._name;
-  _ort=kunde._ort;
-  _id=kunde._id;
-  //return *this;
+void Kunde::setzeOrt(string o) {
+	_ort = o;
 }
 
-int Kunde::ident()
-{
-    return _id;
-}
-void Kunde::setzeName(string n)
-{
-    _name=n;
-}
-string Kunde::getname()
-{
-    return _name;
-}
-void Kunde::setzeOrt(string o)
-{
-    _ort=o;
-}
-string Kunde::getort()
-{
-    return _ort;
-}
-void Kunde::setzePStrat(PreisStrategie *P)
-{
-    _preisStrategie=P;
-}
-int Kunde::preis(Dictionary<CD*> cds, Date tag)
-{
-    return _preisStrategie->preis(cds,tag);
+void Kunde::setzePStrat(PreisStrategie *ps) {
+
+	_preisStrategie = ps;
 }
 
-void Kunde::leiheAus(AusleihPos *apos)
-{
-    _ausleihen.insert(_id,apos);
-}
-void Kunde::rueckgabe(AusleihPos *apos)
-{
-    _ausleihen.remove(_id);
-}
-Dictionary<AusleihPos *> Kunde::holeAusleihen()
-{
-    return _ausleihen;
-}
-Kunde * Kunde::parse(string kunde)
-{
-    string name,ort;
-    int typ;
-    Tokenizer tok(kunde,";,\n");
-    name=tok.nextToken();
-    ort=tok.nextToken();
-    typ=atoi(tok.nextToken().c_str());
-    return  new Kunde(name,ort,typ);
+
+void Kunde::ausleihen(AusleihPos *apos) {
+	_ausleihen.push_back(apos);
 }
 
-string Kunde::toString()
-{
-    ostringstream os;
-    os<<_name<<";"<<_ort<<";"<<_preisStrategie->typ()<<endl;
-    return os.str();
+void Kunde::rueckgabe(AusleihPos *apos) {
+	vector<AusleihPos *>::iterator iter;
+
+	for(iter = _ausleihen.begin(); iter != _ausleihen.end(); iter++) {
+		if(*iter == apos)
+			break;
+	}
+
+	if(iter == _ausleihen.end())
+		throw "ERROR: no such AusleihPos found!!";
+
+	_ausleihen.erase(iter);
+}
+
+vector<AusleihPos *> Kunde::holeAusleihen() {
+	return _ausleihen;
+}
+
+int Kunde::ident() {
+	return _id;
+}
+
+int Kunde::getTyp() {
+	return _preisStrategie->typ();
+}
+
+string Kunde::toString() {
+	ostringstream os;
+
+	os << _id << ":" << _name << ":" << _ort << ":" << _preisStrategie->typ();
+
+	return os.str();
+}
+
+
+Kunde Kunde::parse(string kunde) {
+	string idStr, name, ort, typStr;
+	int id, typ;
+	Tokenizer tok(kunde, ':');
+
+	id = atoi((tok.getSubstr()).c_str());
+	name = tok.getSubstr();
+	ort = tok.getSubstr();
+	typ = atoi((tok.getSubstr()).c_str());
+
+
+	Kunde k(name, ort, typ, id);
+
+	return k;
+}
+
+
+int Kunde::preis(CD cd, Date tag) {
+	return _preisStrategie->preis(cd, tag);
+}
+
+string Kunde::name() {
+	return _name;
+}
+
+string Kunde::ort() {
+	return _ort;
 }

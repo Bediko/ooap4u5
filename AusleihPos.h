@@ -1,26 +1,31 @@
-#ifndef AUSLEIHPOS_H
-#define AUSLEIHPOS_H
-#include<string>
+
+
+#ifndef __AUSLEIHPOS_H__
+#define __AUSLEIHPOS_H__
+
+#include "Date.h"
 #include "Kunde.h"
+#include "CD.h"
 
-using namespace std;
-class Date;
-class Kunde;
-class CD;
-class AusleihPos{
+class AusleihPos {
+protected:
+	CD _cd;
+	Kunde _kunde;
+	Date _tagDerAusleihe;
 
-private:
-	Kunde *_kunde;
-	Date *_tagDerAusleihe;
-	CD *_cd;
 public:
-    Date *getDate();
-	static AusleihPos * parse(string a);
+	AusleihPos(CD c, Kunde k, Date d);
+
+	int identKunde();
+	int identCD();
+	Kunde *getKunde();
+	Date getDate();
+	CD *getCD();
+	static AusleihPos parse(string a);
 	string toString();
-	AusleihPos(Kunde *kunde,CD *cd,Date *tagDerAusleihe);
-	~AusleihPos();
 
 };
+
 
 
 #endif

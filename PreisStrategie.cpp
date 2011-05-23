@@ -1,116 +1,77 @@
-#include"PreisStrategie.h"
-#include<list>
 
 
-int PreisStrategie::typ()
-{
-    return _typ;
+#include "PreisStrategie.h"
+#include "AusleihPos.h"
+
+
+
+// *************************************** PreisStrategie ***********************************************
+
+PreisStrategie::PreisStrategie() {
+	_typ = Kunde::NORMAL;
 }
 
-
-PreisStrategie::PreisStrategie()
-{
-    _typ=0;
+int PreisStrategie::preis(CD cd, Date tag) {
+	Date d = cd.holeAusleihe()->getDate();
+	
+	return cd.preis(tag-d);
 }
 
-
-MitarbeiterPreis::MitarbeiterPreis():PreisStrategie()
-{
-    _typ=1;
+int PreisStrategie::typ() {
+	return _typ;
 }
 
-GrossKundenPreis::GrossKundenPreis():PreisStrategie()
-{
-    _typ=2;
-}
+PreisStrategie *PreisStrategie::itoPS(int typ) {
+	PreisStrategie *ps;
+	
+	if (typ == Kunde::NORMAL)
+		ps = new PreisStrategie;
+	else if (typ == Kunde::MITARBEITER)
+		ps = new MitarbeiterPreis;
+	else if (typ == Kunde::GROSSKUNDE)
+		ps = new GrossKundenPreis;
+	else
+		throw "ERROR: no such PreisStrategie-type found!!";
 
-int PreisStrategie::preis(Dictionary<CD*>  cds, Date tag)
-{
-    int sum=0;
-    int preis;
-    CD *CD;
-    Date ausleihe;
-    try
-    {
-        CD=cds.first().value;
-
-        preis=CD->preis(tag-*(CD->holeAusleihen()->getDate()));
-        sum+=preis;
-        while(1)
-        {
-            CD=cds.next().value;
-            if(CD->holeTyp()==1)
-                continue;
-
-            preis=CD->preis(*(CD->holeAusleihen()->getDate())-tag);
-            sum+=preis;
-        }
-    }
-    catch(...)
-    {
-        return sum;
-    }
-
-
-
+	return ps;
 }
 
 
 
-int GrossKundenPreis::preis(Dictionary<CD*> cds, Date tag)
-{
-    int sum=0;
-    int preis;
-    CD *CD;
-    Date ausleihe;
-    try
-    {
-        CD=cds.first().value;
 
-        preis=CD->preis(tag-*(CD->holeAusleihen()->getDate()));
-        sum+=preis;
-        while(1)
-        {
-            CD=cds.next().value;
-            preis=CD->preis(*(CD->holeAusleihen()->getDate())-tag);
-            sum+=preis;
-        }
-    }
-    catch(...)
-    {
-        sum*=0.85;
 
-        return sum;
-    }
 
+// ************************************ MitarbeiterPreis ************************************************
+
+MitarbeiterPreis::MitarbeiterPreis() {
+	_typ = Kunde::MITARBEITER;
+}
+
+int MitarbeiterPreis::preis(CD cd, Date tag) {
+	if(cd.ident() != 2)
+		return PreisStrategie::preis(cd, tag);
+	else
+		return 0;
 }
 
 
-int MitarbeiterPreis::preis(Dictionary<CD*> cds, Date tag)
-{
-    int sum=0;
-    int preis;
-    CD *CD;
-    Date ausleihe;
-    try
-    {
-        CD=cds.first().value;
-
-        preis=CD->preis(tag-*(CD->holeAusleihen()->getDate()));
-        sum+=preis;
-        while(1)
-        {
-            CD=cds.next().value;
-            preis=CD->preis(*(CD->holeAusleihen()->getDate())-tag);
-            sum+=preis;
-        }
-    }
-    catch(...)
-    {
-        return sum;
-    }
 
 
+
+
+
+// ********************************** GrossKundenPreis ***************************************************
+
+GrossKundenPreis::GrossKundenPreis() {
+	_typ = Kunde::GROSSKUNDE;
 }
 
+int GrossKundenPreis::preis(CD cd, Date tag) {
+	int preis = 0;
 
+	preis = PreisStrategie::preis(cd, tag);
+
+	preis = preis - (preis * 0.15);
+	
+	return preis;
+}

@@ -1,33 +1,46 @@
-#ifndef _DATEFORMAT_H
-#define _DATEFORMAT_H
+#ifndef _DATEFORMAT_H_
+#define _DATEFORMAT_H_
 
-#include <string>
+#include <sstream>
 using namespace std;
 
 class Date;
 
 class DateFormat {
+protected:
+	
+
 public:
-	int getDay(Date *d);
-	int getMonth(Date *d); 
-	int getYear(Date *d);
-    virtual string format(Date *d);
-    virtual Date * parse(string s);
+	virtual string getNameOfDay(int index);
+	static Date *parse(string s);
+	virtual string format(Date *d);
 };
-//------------------------------------------------------------------------------------------------
-class DateFormatDE : public DateFormat
-{
+
+
+
+
+class DateFormatDE : public DateFormat {
+protected:
+	
+
 public:
-    string format(Date *d);
-    Date * parse(string s);
+	string getNameOfDay(int index);
+	string format(Date *d);
+	static Date *parse(string s);
 };
-//------------------------------------------------------------------------------------------------
-class DateFormatEN : public DateFormat
-{
+
+
+
+
+class DateFormatEN : public DateFormat {
+protected:
+	
+
 public:
-    string format(Date *d);
-    Date * parse(string s);
+	string getNameOfDay(int index);
+	string format(Date *d);
+	static Date *parse(string s);
 };
+
 
 #endif
-

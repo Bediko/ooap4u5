@@ -1,51 +1,57 @@
+
+
 #include "AusleihPos.h"
-#include <sstream>
-#include "tokenizer.h"
+#include "Verleih.h"
+#include "Tokenizer.h"
 
-Date* AusleihPos::getDate()
-{
-    return _tagDerAusleihe;
+AusleihPos::AusleihPos(CD c, Kunde k, Date d) {
+	_cd = c;
+	_kunde = k;
+	_tagDerAusleihe = d;
+
+	_kunde.ausleihen(this);
+	_cd.ausleihen(this);
 }
 
-AusleihPos * AusleihPos::parse(string a)
-{
 
-    Date * tagDerAusleihe;
-    CD *cd;
-    Kunde *kunde;
-    tagDerAusleihe=new Date(0,0,0);
-    tagDerAusleihe->setFormat(new DateFormatDE());
-    Tokenizer tok(a,":,\n");
-    tagDerAusleihe=tagDerAusleihe->parse(tok.nextToken());
-    kunde=kunde->parse(tok.nextToken());
-    cd=cd->parse(tok.nextToken());
-    return new AusleihPos(kunde,cd,tagDerAusleihe);
+AusleihPos AusleihPos::parse(string a) {
+	string kunde, cd, tag;
+	Tokenizer tok(a, ';');
 
+	cd = tok.getSubstr();
+	kunde = tok.getSubstr();
+	tag = tok.getSubstr();
+
+
+	AusleihPos apos(CD::parse(cd), Kunde::parse(kunde), *DateFormatDE::parse(tag));
+
+	return apos;
 }
-string AusleihPos::toString()
-{
-	ostringstream os;
-	os << _tagDerAusleihe->toString()<<":"<<_kunde->toString()<<":"<<_cd->toString()<<endl;
+
+Kunde *AusleihPos::getKunde() {
+	return &_kunde;
+}
+
+CD *AusleihPos::getCD() {
+	return &_cd;
+}
+
+Date AusleihPos::getDate() {
+	return _tagDerAusleihe;
+}
+
+string AusleihPos::toString() {
+	stringstream os;
+
+	os << _cd.toString() << ";" << _kunde.toString() << ";" <<  _tagDerAusleihe.toString();
+
 	return os.str();
 }
-AusleihPos::AusleihPos(Kunde *kunde,CD *cd,Date *tagderAusleihe)
-{
-    _kunde=kunde;
-    _tagDerAusleihe=tagderAusleihe;
-    _cd=cd;
+
+int AusleihPos::identCD() {
+	return _cd.ident();
 }
-AusleihPos::~AusleihPos()
-{
+
+int AusleihPos::identKunde() {
+	return _kunde.ident();
 }
-/*AusleihPos::AusleihPos(const CD& rhs)
-{
-}
-AusleihPos AusleihPos::operator=(CD)
-{
-}
-AusleihPos AusleihPos::operator==(CD)
-{
-}
-AusleihPos AusleihPos::operator<(CD)
-{
-}*/

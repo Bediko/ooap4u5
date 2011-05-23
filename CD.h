@@ -1,42 +1,46 @@
-#ifndef CD_H
-#define CD_H
-#include<string>
-#include<list>
-#include"AusleihPos.h"
 
+#ifndef __CD_H__
+#define __CD_H__
+
+#include <vector>
+#include <string>
 using namespace std;
 
 class AusleihPos;
 
-class CD{
+
+class CD {
 protected:
 	static int _number;
 	int _id;
+	string _titel;
+	string _interpret;
 	int _typ;
 	int _basispreis;
 	int _strafeProTag;
 	int _dauer;
-	string _titel;
-	string _interpret;
 	AusleihPos *_ausleihe;
+
 public:
+	static const int NORMAL = 1;
+	static const int ANGEBOT = 2;
+	static const int BESTSELLER = 3;
+
+	CD();
+	CD(string titel, string interpret, int typ);
+	CD(string titel, string interpret, int typ, int id);
 	int ident();
 	string titel();
 	string interpret();
 	void setzeTyp(int typ);
 	int holeTyp();
 	void ausleihen(AusleihPos *apos);
-	AusleihPos* holeAusleihen();
+	void rueckgabe();
+	AusleihPos *holeAusleihe();
 	int preis(int dauer);
-	static CD * parse(string cd);
+	static CD parse(string cd);
+
 	string toString();
-	CD();
-	~CD();
-	CD(int typ, int dauer, string titel, string interpret,AusleihPos *ausleihe);
-	CD(const CD& rhs);
-	CD operator=(const CD& CD);
-	bool operator==(const CD& CD);
-	bool operator<(const CD& CD);
 };
 
 

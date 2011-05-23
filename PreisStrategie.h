@@ -1,41 +1,51 @@
-#ifndef PREISSTRATEGIE_H
-#define PREISSTRATEGIE_H
 
-#include "date.h"
+
+#ifndef __PREISSTRATEGIE_H__
+#define __PREISSTRATEGIE_H__
+
 #include "CD.h"
-#include "dictionary.h"
-using namespace std;
-class CD;
+#include "Date.h"
+#include <vector>
 
-class PreisStrategie{
+// ************************** PreisStrategie *******************************************
+class PreisStrategie {
+
 protected:
 	int _typ;
+
 public:
-    virtual int preis(Dictionary<CD*>  cds, Date tag);
-	int typ();
 	PreisStrategie();
-	Date getDate();
 
+	static PreisStrategie *itoPS(int typ);
+	virtual int preis(CD cd, Date tag);
+	int typ();
 };
 
-class GrossKundenPreis: public PreisStrategie{
 
+
+
+
+
+// ************************* MitarbeiterPreis *****************************************
+class MitarbeiterPreis : public PreisStrategie {
 public:
-	int preis(Dictionary<CD*> cds, Date tag);
-	GrossKundenPreis();
-
-
-
-};
-
-class MitarbeiterPreis: public PreisStrategie{
-
-public:
-	int preis(Dictionary<CD*> cds, Date tag);
 	MitarbeiterPreis();
 
+	int preis(CD cd, Date tag);
+
 };
 
+
+
+
+// ************************* GrossKundenPreis ******************************************
+class GrossKundenPreis : public PreisStrategie {
+public:
+	GrossKundenPreis();
+
+	int preis(CD cd, Date tag);
+
+};
 
 
 #endif

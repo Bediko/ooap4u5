@@ -1,178 +1,137 @@
 
-#include"CD.h"
-#include<string>
-#include<list>
-#include<sstream>
-#include<cstdlib>
-#include"tokenizer.h"
 
+#include "CD.h"
+#include "Tokenizer.h"
+#include <sstream>
 using namespace std;
-int CD::_number=0;
 
-int CD::ident()
-{
+int CD::_number = 1;
+
+CD::CD() {
+	_titel = "";
+	_interpret = "";
+	_typ = 0;
+	_id = 0;
+	_ausleihe = NULL;
+}
+
+CD::CD(string titel, string interpret, int typ) {
+	
+	if (titel.find(":") == titel.npos)
+		_titel = titel;
+	else
+		throw "ERROR: invalid input";
+
+	_interpret = interpret;
+	_id = CD::_number++;
+	_typ = typ;
+	_ausleihe = NULL;
+
+	setzeTyp(typ);
+}
+
+CD::CD(string titel, string interpret, int typ, int id) {
+
+	_titel = titel;
+	_interpret = interpret;
+	_id = id;
+	_typ = typ;
+	_ausleihe = NULL;
+
+	setzeTyp(typ);
+
+	if (id >= _number)
+		_number = id + 1;
+}
+
+void CD::setzeTyp(int typ) {
+	_typ = typ;
+
+	if (typ == CD::NORMAL) {
+		_dauer = 4;
+		_basispreis = 200;
+		_strafeProTag = 100;
+	} else if (typ == CD::ANGEBOT) {
+		_dauer = 10;
+		_basispreis = 100;
+		_strafeProTag = 40;
+	} else if (typ == CD::BESTSELLER) {
+		_dauer = 1;
+		_basispreis = 200;
+		_strafeProTag = 500;
+	} else
+		throw "ERROR: no such CD-type found!!";
+}
+
+
+int CD::ident() {
 	return _id;
 }
-string CD::titel()
-{
+
+
+void CD::ausleihen(AusleihPos *apos) {
+	if(!this->holeAusleihe()) {
+		_ausleihe = apos;
+	}
+	else {
+		throw "ERROR: CD already loan";
+	}
+}
+
+void CD::rueckgabe() {
+	_ausleihe = NULL;
+}
+
+
+AusleihPos *CD::holeAusleihe() {
+	return this->_ausleihe;
+}
+
+string CD::toString() {
+	ostringstream os;
+
+	os << _id << ":" << _titel << ":" << _interpret << ":" << _typ;
+
+	return os.str();
+
+}
+
+
+CD CD::parse(string cd) {
+	string idStr, titel, interpret, typStr;
+	int id, typ;
+	Tokenizer tok(cd, ':');
+
+	id = atoi((tok.getSubstr()).c_str());
+	titel = tok.getSubstr();
+	interpret = tok.getSubstr();
+	typ = atoi((tok.getSubstr()).c_str());
+
+	
+
+	CD neueCD(titel, interpret, typ, id);
+
+	return neueCD;
+}
+
+int CD::preis(int dauer) {
+
+	if(dauer <= _dauer)
+		return _basispreis;
+	else {
+		dauer -= _dauer;
+		return (_basispreis + (dauer * _strafeProTag));
+	}
+}
+
+string CD::titel() {
 	return _titel;
 }
 
-string CD::interpret()
-{
+string CD::interpret() {
 	return _interpret;
 }
-void CD::setzeTyp(int typ)
-{
-	_typ=typ;
-}
-int CD::holeTyp()
-{
+
+int CD::holeTyp() {
 	return _typ;
-}
-void CD::ausleihen(AusleihPos *apos)
-{
-	_ausleihe=apos;
-}
-
-AusleihPos* CD::holeAusleihen()
-{
-	return _ausleihe;
-}
-
-int CD::preis(int dauer)
-{
-    int preis;
-    preis=_basispreis*dauer;
-    switch(_typ)
-    {
-    case 0:
-        if(dauer>4)
-            preis+=((dauer-4)*_strafeProTag);
-        break;
-    case 1:
-        if(dauer>10)
-            preis+=(dauer-10)*_strafeProTag;
-        break;
-    case 2:
-        if(dauer>1)
-            preis+=(dauer-1)*_strafeProTag;
-        break;
-    }
-	return preis;
-}
-
-CD * CD::parse(string cd)
-{
-    string titel,interpret;
-    Tokenizer tok(cd,";,\n");
-    int typ,basispreis,strafeprotag,dauer;
-
-
-    typ=atoi(tok.nextToken().c_str());
-    basispreis=atoi(tok.nextToken().c_str());
-    strafeprotag=atoi(tok.nextToken().c_str());
-    dauer=atoi(tok.nextToken().c_str());
-    titel=tok.nextToken();
-    interpret=tok.nextToken();
-
-    return new CD(typ,dauer,titel,interpret,NULL);
-
-
-}
-
-string CD::toString()
-{
-	ostringstream os;
-	os<<_typ << ";"<<_basispreis<<";"<<_strafeProTag<<";"<<_dauer<<";"<<_titel<<";"<<_interpret<<endl;
-	return os.str();
-}
-
-
-CD::CD()
-{
-    _id=CD::_number;
-	_typ=-1;
-	_basispreis=-1;
-	_strafeProTag=-1;
-    _dauer=-1;
-	_titel="NULL";
-	_interpret="NULL";
-	_ausleihe=NULL;
-	CD::_number++;
-}
-
-CD::CD(int typ,int dauer, string titel, string interpret,AusleihPos *ausleihe)
-{
-    _id=CD::_number;
-    CD::_number++;
-
-	_typ=typ;
-	switch(_typ)
-	{
-	    case 0:
-	    _basispreis=200;
-        _strafeProTag=100;
-        break;
-        case 1:
-	    _basispreis=100;
-        _strafeProTag=40;
-        break;
-        case 2:
-	    _basispreis=200;
-        _strafeProTag=500;
-        break;
-	}
-
-    _dauer=dauer;
-	_titel=titel;
-	_interpret=interpret;
-	_ausleihe=ausleihe;
-
-}
-
-CD::~CD()
-{
-    delete(_ausleihe);
-
-}
-
-CD::CD(const CD& rhs)
-{
-
-	_id=rhs._id;
-	_typ=rhs._typ;
-	_basispreis=rhs._basispreis;
-	_strafeProTag=rhs._strafeProTag;
-	_dauer=rhs._dauer;
-	_titel=rhs._titel;
-	_interpret=rhs._interpret;
-	_ausleihe=rhs._ausleihe;
-}
-
-CD CD::operator=(const CD& CD)
-{
-    delete(_ausleihe);
-	_id=CD._id;
-	_typ=CD._typ;
-	_basispreis=CD._basispreis;
-	_strafeProTag=CD._strafeProTag;
-	_dauer=CD._dauer;
-	_titel=CD._titel;
-	_interpret=CD._interpret;
-	_ausleihe=0;
-	_ausleihe=CD._ausleihe;
-
-	return *this;
-}
-
-
-bool  CD::operator==(const CD& CD){
-
-return (_titel.compare(CD._titel)==0)&&(_interpret.compare(CD._interpret)==0);
-}
-
-bool CD::operator<(const CD& CD)
-{
-    return ((_interpret.compare(CD._interpret)<0)||(_interpret.compare(CD._interpret)==0))&&_titel.compare(CD._titel)<0;
 }
